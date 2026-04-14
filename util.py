@@ -27,6 +27,8 @@ def get_location_names():
 
 import os
 
+import os
+
 def load_saved_artifacts():
     print('loading stored artifacts...start')
 
@@ -34,15 +36,15 @@ def load_saved_artifacts():
     global __locations
     global __model
 
-    base_path = os.path.dirname(__file__)  # important fix
+    base_path = os.path.dirname(os.path.abspath(__file__))
 
     # Load columns
-    with open(os.path.join(BASE_DIR, "artifacts", "columns.json"), 'r') as f:
+    with open(os.path.join(base_path, "artifacts", "columns.json"), 'r') as f:
         __data_columns = json.load(f)['data_columns']
         __locations = __data_columns[3:]
 
-    # Load model (FIXED NAME)
-    with open(os.path.join(base_path, "artifacts/bangalore_house_prices_model.pickle"), 'rb') as f:
+    # Load model
+    with open(os.path.join(base_path, "artifacts", "bangalore_house_pries_model.pickle"), 'rb') as f:
         __model = pickle.load(f)
 
     print('loading saved artifacts...done')
