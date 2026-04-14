@@ -14,18 +14,26 @@ def get_location_names():
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
-@app.route('/predict_home_price', methods = ['POST'])
+@app.route('/predict_home_price', methods=['POST'])
 def predict_home_price():
-    total_sqft = float(request.form['total_sqft'])
-    location = request.form['location']
-    bhk = int(request.form['bhk'])
-    bath = int(request.form['bath'])
+    try:
+        total_sqft = float(request.form.get('total_sqft', 0))
+        location = request.form.get('location', '')
+        bhk = int(request.form.get('bhk', 0))
+        bath = int(request.form.get('bath', 0))
 
-    response = jsonify({
-        'estimated_price' : util.get_estimated_price(location, total_sqft, bhk, bath)
-    })
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
+        if not location:
+            return jsonify({'error': 'Location is required'})
+
+        price = util.get_estimated_price(location, total_sqft, bhk, bath)
+
+        response = jsonify({'estimated_price': price})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+
+    except Exception as e:
+        print("ERROR:", e)
+        return jsonify({'error': str(e)})
 
 import os
 
