@@ -23,7 +23,7 @@ def get_estimated_price(location, sqft, bath, bhk):
 
 
 def get_location_names():
-    return __locations
+    return __data_columns[3:]
 
 def load_saved_artifacts():
     print('loading stored artifacts...start')
